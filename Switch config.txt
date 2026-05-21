@@ -22,3 +22,55 @@ exit
 vlan 10
 name Management
 exit
+
+
+interface g0/0.10
+Description Default Gateway fo VLAN 10
+encapsulation dot1Q 10
+ip add 10.8.0.1 255.255.255.224
+exit
+interface g0/0.20
+Description Default Gateway fo VLAN 20
+encapsulation dot1Q 20
+ip add 10.8.0.33 255.255.255.224
+exit
+interface g0/0.30
+Description Default Gateway fo VLAN 30
+encapsulation dot1Q 30
+ip add 10.8.0.65 255.255.255.224
+
+
+
+
+
+interface f0/10
+switchport mode access
+switchport access vlan 10
+interface f0/11
+switchport mode access
+switchport access vlan 20
+interface f0/12
+switchport mode access
+switchport access vlan 30
+
+
+interface g0/0.30
+no ip add 10.8.0.66 255.255.255.224
+ip add 10.8.0.66 255.255.255.240
+interface g0/0.99
+description Defult Gateway for Vlan99
+encapsulation dot1Q 99
+ip add 10.8.0.82 255.255.255.240
+
+
+
+interface g0/0.20
+standby 2 ip 10.8.0.35
+standby 2 preempt
+interface g0/0.30
+standby 3 ip 10.8.0.67
+standby 3 preempt
+interface g0/0.99
+standby 99 ip 10.8.0.83
+standby 99 preempt
+
