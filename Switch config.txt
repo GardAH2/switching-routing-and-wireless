@@ -74,3 +74,45 @@ interface g0/0.99
 standby 99 ip 10.8.0.83
 standby 99 preempt
 
+en
+conf t
+interface vlan 99
+ip add 10.8.0.87 255.255.255.240
+no shut
+exit
+ip default-gateway 10.8.0.83
+
+
+
+ISP ROUTER
+interface se0/0/0
+description link_to_H0_Router1
+ip address 192.168.1.1 255.255.255.252
+
+interface se0/0/1
+description link_to_H0_Router2
+ip address 192.168.1.5 255.255.255.252
+
+
+interface se0/0/0
+description link_to_ISP
+ip address 192.168.1.2 255.255.255.252
+
+interface se0/0/0
+description link_to_ISP
+ip address 192.168.1.6 255.255.255.252
+
+router ospf 1
+ redistribute static subnets
+ 
+ 
+ 10.8.0.0 255.255.0.0
+ 10.9.0.0 255.255.255.0
+ 
+ ip route 10.8.0.0 255.255.0.0 192.168.1.2
+ ip route  10.8.0.0 255.255.0.0 192.168.1.6 5
+ ip route  10.9.0.0 255.255.255.0 192.168.1.6
+ ip route  10.9.0.0 255.255.255.0 192.168.1.2 5
+
+
+
