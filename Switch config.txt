@@ -74,45 +74,102 @@ interface g0/0.99
 standby 99 ip 10.8.0.83
 standby 99 preempt
 
-en
-conf t
-interface vlan 99
-ip add 10.8.0.87 255.255.255.240
-no shut
-exit
-ip default-gateway 10.8.0.83
-
-
-
-ISP ROUTER
-interface se0/0/0
-description link_to_H0_Router1
-ip address 192.168.1.1 255.255.255.252
-
-interface se0/0/1
-description link_to_H0_Router2
-ip address 192.168.1.5 255.255.255.252
-
-
-interface se0/0/0
-description link_to_ISP
-ip address 192.168.1.2 255.255.255.252
-
-interface se0/0/0
-description link_to_ISP
-ip address 192.168.1.6 255.255.255.252
 
 router ospf 1
- redistribute static subnets
- 
- 
- 10.8.0.0 255.255.0.0
- 10.9.0.0 255.255.255.0
- 
- ip route 10.8.0.0 255.255.0.0 192.168.1.2
- ip route  10.8.0.0 255.255.0.0 192.168.1.6 5
- ip route  10.9.0.0 255.255.255.0 192.168.1.6
- ip route  10.9.0.0 255.255.255.0 192.168.1.2 5
+router-id 2.2.2.2
 
 
+router ospf 1
+router-id 2.2.2.2
+network 10.8.0.0 0.0.0.31 area 0
+network 10.8.0.32 0.0.0.31 area 0
+network 10.8.0.64 0.0.0.15 area 0
+network 10.8.0.80 0.0.0.15 area 0
+
+
+
+
+
+
+
+
+
+
+✅ SRWE Assignment – 1 Page Testing Checklist
+Use this checklist while running Packet Tracer. Tick ✅ when verified and capture screenshots where required.
+________________________________________
+🔹 BASIC CONFIGURATION
+•	show ip interface brief → All required interfaces are up/up
+•	show running-config → Hostnames, management IPs configured
+•	show vlan brief → VLANs exist (Sales, Admin, Server, Mgmt)
+________________________________________
+🔹 VLANs & TRUNKING
+•	show vlan brief → Ports in correct VLANs
+•	show interfaces trunk → Trunks active, correct VLANs allowed
+•	Native VLAN is non-default
+✅ Expected result:
+•	VLANs present on all switches
+•	Trunks list only required VLANs
+________________________________________
+🔹 SPANNING TREE (PVST+)
+•	show spanning-tree vlan 10✅ Expected result:
+•	Correct root bridge per VLAN
+•	Root/Designated/Blocking ports visible
+•	________________________________________
+🔹 ETHERCHANNEL
+•	show etherchannel summary✅ Expected result:
+•	Port-channel shows SU (Layer2, in use)
+•	Protocol = PAgP or LACP correctly
+•	________________________________________
+🔹 PORTFAST & BPDU GUARD
+•	show run | include portfast✅ Expected result:
+•	Enabled on access ports only
+•	________________________________________
+🔹 INTER-VLAN ROUTING (ROAS)
+•	show ip interface brief✅ Expected result:
+•	Subinterfaces exist (e.g., G0/0.10)
+•	Encapsulation dot1q configured
+•	Gateway IP per VLAN
+•	________________________________________
+🔹 HSRP
+•	show standby brief✅ Expected result:
+•	One router = Active, other = Standby
+•	Virtual IP same across both
+•	Matches root bridge design
+•	________________________________________
+🔹 OSPF
+•	show ip ospf neighbor✅ Expected result:
+•	Neighbors in FULL state
+•	Routes learned via OSPF (marked “O”)
+•	________________________________________
+🔹 SITE2 CONFIG
+•	show ip route✅ Expected result:
+•	L3 switch routing enabled
+•	VLANs routable
+•	________________________________________
+🔹 PORT SECURITY
+•	show port-security interface fa0/x✅ Expected result:
+•	Max MAC = 2
+•	Violation mode set
+•	________________________________________
+🔹 WAN LINKS
+•	show ip interface brief✅ Expected result:
+•	WAN links up (/30 networks)
+•	________________________________________
+🔹 DHCP
+•	show ip dhcp binding✅ Expected result:
+•	PCs receive IP automatically
+•	Correct pools for all VLANs
+•	________________________________________
+🔹 INTERNET ROUTING
+•	show ip route✅ Expected result:
+•	Default route (0.0.0.0/0)
+•	ISP routes present
+•	________________________________________
+•	show ip dhcp pool
+•	show run | include ip routing
+•	show ip route ospf
+•	show run | section interface
+•	show run | include bpduguard
+•	show spanning-tree vlan 20
 
