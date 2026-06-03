@@ -89,10 +89,15 @@ network 10.8.0.80 0.0.0.15 area 0
 
 
 
+interface port-channel 1
+switchport trunk allowed vlan add 99
 
 
+interface port-channel 2
+switchport trunk allowed vlan add 99
 
-
+interface range fa0/1-4
+switchport trunk allowed vlan add 99
 
 
 ✅ SRWE Assignment – 1 Page Testing Checklist
